@@ -52,7 +52,7 @@
                 </div>
 
                 <!-- Weight -->
-                <div>
+                <div class="mb-5">
                     <label for="weight" class="block text-sm font-semibold text-gray-800 mb-1">Berat Produk</label>
                     <div class="relative">
                         <input type="number" name="weight" id="weight" value="{{ old('weight', $product->weight) }}" min="0" step="1"
@@ -63,6 +63,24 @@
                         </div>
                     </div>
                     <p class="text-xs text-gray-400 mt-1">Digunakan untuk kalkulasi ongkir. Kosongkan jika tidak ada.</p>
+                </div>
+
+                <!-- Stock -->
+                <div class="mb-5">
+                    <label for="stock" class="block text-sm font-semibold text-gray-800 mb-1">Stok Produk</label>
+                    <input type="number" name="stock" id="stock" value="{{ old('stock', $product->stock) }}" min="0" step="1"
+                        class="w-full border-gray-300 rounded-xl shadow-sm focus:border-brand-500 focus:ring focus:ring-brand-500/20 px-4 py-2.5 transition"
+                        placeholder="0">
+                    <p class="text-xs text-gray-400 mt-1">Stok saat ini. Pembeli hanya bisa memesan jika stok tersedia.</p>
+                </div>
+
+                <!-- Sizes -->
+                <div>
+                    <label for="sizes" class="block text-sm font-semibold text-gray-800 mb-1">Pilihan Ukuran / Size (Pisahkan dengan koma)</label>
+                    <input type="text" name="sizes" id="sizes" value="{{ old('sizes', $product->sizes) }}"
+                        class="w-full border-gray-300 rounded-xl shadow-sm focus:border-brand-500 focus:ring focus:ring-brand-500/20 px-4 py-2.5 transition"
+                        placeholder="Contoh: S, M, L, XL, XXL">
+                    <p class="text-xs text-gray-400 mt-1">Kosongkan jika produk tidak memiliki pilihan ukuran.</p>
                 </div>
             </div>
         </div>

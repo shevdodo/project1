@@ -108,8 +108,8 @@ Route::middleware('auth')->group(function () {
     // Cart Routes
     Route::get('/cart', [App\Http\Controllers\CartController::class, 'index'])->name('cart.index');
     Route::post('/cart/{id}', [App\Http\Controllers\CartController::class, 'add'])->name('cart.add')->where('id', '[0-9]+');
-    Route::patch('/cart/{id}', [App\Http\Controllers\CartController::class, 'update'])->name('cart.update')->where('id', '[0-9]+');
-    Route::delete('/cart/{id}', [App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove')->where('id', '[0-9]+');
+    Route::patch('/cart/{id}', [App\Http\Controllers\CartController::class, 'update'])->name('cart.update')->where('id', '[0-9A-Za-z\-]+');
+    Route::delete('/cart/{id}', [App\Http\Controllers\CartController::class, 'remove'])->name('cart.remove')->where('id', '[0-9A-Za-z\-]+');
 
     Route::post('/checkout', [App\Http\Controllers\CartController::class, 'checkout'])->name('checkout');
 

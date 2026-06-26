@@ -23,6 +23,9 @@
                         @endif
                         <div class="flex-1">
                             <h4 class="font-bold text-gray-900 text-sm mb-1 pr-8">{{ $details['name'] }}</h4>
+                            @if(!empty($details['size']))
+                                <p class="text-xs text-gray-500 mb-1">Size: <span class="font-semibold text-gray-700">{{ $details['size'] }}</span></p>
+                            @endif
                             <p class="font-bold text-brand-600 text-sm mb-3">Rp {{ number_format($details['price'], 0, ',', '.') }}</p>
                             
                             <form action="{{ route('cart.update', $id) }}" method="POST" class="flex items-center space-x-2">
@@ -77,6 +80,9 @@
                                             </div>
                                         @endif
                                         <span class="font-bold text-gray-900">{{ $details['name'] }}</span>
+                                        @if(!empty($details['size']))
+                                            <span class="ml-2 text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-md font-semibold">Size: {{ $details['size'] }}</span>
+                                        @endif
                                     </div>
                                 </td>
                                 <td class="py-4 px-6 text-center">

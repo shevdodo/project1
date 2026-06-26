@@ -54,16 +54,25 @@ class CartController extends Controller
     public function add(Request $request, $id)
     {
         $product = \App\Models\Product::findOrFail($id);
-        $cart = session()->get('cart', []);
+        
+        if ($product->stock <= 0) {
+            return redirect()->back()->with('error', 'Maaf, produk ini sedang habis stok.');
+        }
 
-        if (isset($cart[$id])) {
-            $cart[$id]['quantity']++;
+        $cart = session()->get('cart', []);
+        $size = $request->input('size');
+        $cartKey = $size ? $id . '-' . $size : $id;
+
+        if (isset($cart[$cartKey])) {
+            $cart[$cartKey]['quantity']++;
         } else {
-            $cart[$id] = [
+            $cart[$cartKey] = [
+                'product_id' => $product->id,
                 'name' => $product->name,
                 'price' => $product->price,
                 'quantity' => 1,
-                'image' => $product->image
+                'image' => $product->image,
+                'size' => $size
             ];
         }
 
@@ -223,14 +232,26 @@ class CartController extends Controller
         ]);
 
         foreach ($cart as $id => $item) {
+            $productId = isset($item['product_id']) ? $item['product_id'] : (int)$id;
+            $productName = $item['name'];
+            if (!empty($item['size'])) {
+                $productName .= ' (Size: ' . $item['size'] . ')';
+            }
+
             \App\Models\OrderItem::create([
                 'order_id' => $order->id,
-                'product_id' => $id,
-                'product_name' => $item['name'],
+                'product_id' => $productId,
+                'product_name' => $productName,
                 'quantity' => $item['quantity'],
                 'price' => $item['price'],
                 'total' => $item['price'] * $item['quantity'],
             ]);
+
+            // Decrement stock
+            $product = \App\Models\Product::find($productId);
+            if ($product) {
+                $product->decrement('stock', $item['quantity']);
+            }
         }
 
         // Clear cart

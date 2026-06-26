@@ -83,6 +83,7 @@
                                 <th class="py-4 px-4 font-semibold text-gray-600">Product</th>
                                 <th class="py-4 px-4 font-semibold text-gray-600">Price</th>
                                 <th class="py-4 px-4 font-semibold text-gray-600">Category</th>
+                                <th class="py-4 px-4 font-semibold text-gray-600">Stock</th>
                                 <th class="py-4 px-4 font-semibold text-gray-600">Status</th>
                                 <th class="py-4 px-4 font-semibold text-gray-600 text-right">Actions</th>
                             </tr>
@@ -109,12 +110,29 @@
                                             @endif
                                             <div>
                                                 <p class="font-medium text-gray-900">{{ $product->name }}</p>
-                                                <p class="text-xs text-gray-500">{{ $product->slug }}</p>
+                                                <div class="flex items-center space-x-2 text-xs text-gray-500 mt-0.5">
+                                                    <span>{{ $product->slug }}</span>
+                                                    @if($product->weight)
+                                                        <span>•</span>
+                                                        <span>{{ $product->weight }}g</span>
+                                                    @endif
+                                                    @if($product->sizes)
+                                                        <span>•</span>
+                                                        <span class="bg-gray-100 px-1 py-0.5 rounded text-gray-600">Sizes: {{ $product->sizes }}</span>
+                                                    @endif
+                                                </div>
                                             </div>
                                         </div>
                                     </td>
                                     <td class="py-4 px-4 text-gray-800 font-medium">Rp {{ number_format($product->price, 0, ',', '.') }}</td>
                                     <td class="py-4 px-4 text-gray-500 text-sm">{{ $product->category ? $product->category->name : '-' }}</td>
+                                    <td class="py-4 px-4 text-sm font-medium">
+                                        @if($product->stock > 0)
+                                            <span class="text-gray-950">{{ $product->stock }}</span>
+                                        @else
+                                            <span class="text-red-600 bg-red-50 px-1.5 py-0.5 rounded">Habis</span>
+                                        @endif
+                                    </td>
                                     <td class="py-4 px-4 text-sm">
                                         @if($product->status == 'available')
                                             <span class="px-2 py-1 bg-emerald-100 text-emerald-800 rounded-full text-xs font-medium">Available</span>

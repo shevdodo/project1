@@ -57,10 +57,34 @@
                         @endif
                     </nav>
                     
-                    <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-4">{{ $product->name }}</h1>
+                    <h1 class="text-3xl sm:text-4xl font-extrabold text-gray-900 mb-2">{{ $product->name }}</h1>
                     
-                    <div class="mb-6">
-                        <span class="text-3xl font-bold text-brand-600">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                    {{-- Price, Weight, and Stock details --}}
+                    <div class="mb-6 flex flex-col gap-2">
+                        <div class="flex items-baseline gap-2">
+                            <span class="text-3xl font-bold text-brand-600">Rp {{ number_format($product->price, 0, ',', '.') }}</span>
+                        </div>
+                        
+                        <div class="flex items-center gap-3 flex-wrap mt-2">
+                            @if($product->weight)
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-gray-100 text-gray-600">
+                                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg>
+                                    {{ $product->weight }} gr
+                                </span>
+                            @endif
+
+                            @if($product->stock > 0)
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-emerald-50 text-emerald-700">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                                    Ready Stock ({{ $product->stock }})
+                                </span>
+                            @else
+                                <span class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full text-xs font-semibold bg-red-50 text-red-700">
+                                    <span class="w-1.5 h-1.5 rounded-full bg-red-500"></span>
+                                    Stok Habis
+                                </span>
+                            @endif
+                        </div>
                     </div>
                     
                     <div class="prose prose-sm text-gray-600 mb-8">
@@ -70,8 +94,38 @@
                     <div>
                         <form action="{{ route('cart.add', $product->id) }}" method="POST">
                             @csrf
-                            <button type="submit" class="w-full sm:w-auto px-8 py-4 bg-brand-600 text-white font-bold rounded-xl hover:bg-brand-700 shadow-lg shadow-brand-600/30 transition transform hover:-translate-y-1">
-                                Add to Cart
+                            
+                            @php
+                                $sizeList = [];
+                                if (!empty($product->sizes)) {
+                                    $sizeList = array_filter(array_map('trim', explode(',', $product->sizes)));
+                                }
+                            @endphp
+
+                            @if(!empty($sizeList))
+                                <div class="mb-6" x-data="{ selectedSize: '{{ reset($sizeList) }}' }">
+                                    <label class="block text-sm font-bold text-gray-700 uppercase tracking-wider mb-2">Pilih Ukuran:</label>
+                                    <div class="flex flex-wrap gap-2">
+                                        <input type="hidden" name="size" :value="selectedSize">
+                                        @foreach($sizeList as $size)
+                                            <button type="button" @click="selectedSize = '{{ $size }}'"
+                                                :class="selectedSize === '{{ $size }}' ? 'bg-brand-600 text-white border-brand-600 shadow-sm' : 'bg-white text-gray-800 border-gray-200 hover:border-gray-300'"
+                                                class="px-4 py-2 text-sm font-semibold border rounded-xl transition duration-150">
+                                                {{ $size }}
+                                            </button>
+                                        @endforeach
+                                    </div>
+                                </div>
+                            @endif
+
+                            <button type="submit" 
+                                @if($product->stock <= 0) disabled @endif
+                                class="w-full sm:w-auto px-8 py-4 text-white font-bold rounded-xl shadow-lg transition transform hover:-translate-y-0.5 bg-brand-600 hover:bg-brand-700 shadow-brand-600/30 disabled:bg-gray-300 disabled:text-gray-400 disabled:cursor-not-allowed disabled:transform-none disabled:shadow-none">
+                                @if($product->stock <= 0)
+                                    Stok Habis
+                                @else
+                                    Add to Cart
+                                @endif
                             </button>
                         </form>
                     </div>

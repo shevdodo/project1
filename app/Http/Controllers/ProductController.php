@@ -42,6 +42,8 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price'       => 'nullable|numeric|min:0',
             'weight'      => 'nullable|integer|min:0',
+            'stock'       => 'nullable|integer|min:0',
+            'sizes'       => 'nullable|string|max:255',
             'status'      => 'required|in:available,unavailable',
             'category_id' => 'nullable|exists:categories,id',
             'image'       => 'nullable|image|max:2048',
@@ -54,6 +56,10 @@ class ProductController extends Controller
         
         if (empty($data['price'])) {
             $data['price'] = 0;
+        }
+
+        if (!isset($data['stock']) || $data['stock'] === '') {
+            $data['stock'] = 0;
         }
 
         if ($request->hasFile('image')) {
@@ -84,6 +90,8 @@ class ProductController extends Controller
             'description' => 'nullable|string',
             'price'       => 'nullable|numeric|min:0',
             'weight'      => 'nullable|integer|min:0',
+            'stock'       => 'nullable|integer|min:0',
+            'sizes'       => 'nullable|string|max:255',
             'status'      => 'required|in:available,unavailable',
             'category_id' => 'nullable|exists:categories,id',
             'image'       => 'nullable|image|max:2048',
@@ -96,6 +104,10 @@ class ProductController extends Controller
 
         if (empty($data['price'])) {
             $data['price'] = 0;
+        }
+
+        if (!isset($data['stock']) || $data['stock'] === '') {
+            $data['stock'] = 0;
         }
 
         if ($request->hasFile('image')) {
