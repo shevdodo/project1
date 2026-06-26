@@ -47,8 +47,7 @@
 
                 <!-- Image -->
                 <div>
-                    <label for="image" class="block text-sm font-semibold text-gray-800 mb-1">Feature Image (Optional)</label>
-                    <input type="file" name="image" id="image" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100 transition">
+                    <x-media-picker name="image" label="Feature Image (Optional)" preview-size="lg" />
                 </div>
             </div>
 

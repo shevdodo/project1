@@ -47,13 +47,7 @@
 
                 <!-- Image -->
                 <div>
-                    <label for="image" class="block text-sm font-semibold text-gray-800 mb-1">Feature Image</label>
-                    @if($category->image)
-                        <div class="mb-3">
-                            <img src="{{ asset('storage/' . $category->image) }}" alt="Category Image" class="w-32 h-32 object-cover rounded-xl border border-gray-200">
-                        </div>
-                    @endif
-                    <input type="file" name="image" id="image" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100 transition">
+                    <x-media-picker name="image" label="Feature Image" :value="$category->image" preview-size="lg" />
                 </div>
             </div>
 

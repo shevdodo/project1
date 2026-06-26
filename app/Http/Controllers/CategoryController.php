@@ -35,6 +35,8 @@ class CategoryController extends Controller
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('categories', 'public');
+        } elseif ($request->has('image_media_path')) {
+            $data['image'] = $request->input('image_media_path');
         }
 
         Category::create($data);
@@ -63,6 +65,8 @@ class CategoryController extends Controller
 
         if ($request->hasFile('image')) {
             $data['image'] = $request->file('image')->store('categories', 'public');
+        } elseif ($request->has('image_media_path')) {
+            $data['image'] = $request->input('image_media_path');
         }
 
         $category->update($data);
