@@ -79,7 +79,24 @@ class PageController extends Controller
 
         // Handle homepage structured content
         if ($page->template === 'homepage' && $request->has('hp')) {
-            $data['content'] = json_encode($request->input('hp'));
+            $hp = $request->input('hp');
+
+            // Retrieve existing background image if not replaced
+            $currentHpContent = [];
+            if (!empty($page->content)) {
+                $decoded = json_decode($page->content, true);
+                if (json_last_error() === JSON_ERROR_NONE) $currentHpContent = $decoded;
+            }
+
+            $heroBg = $currentHpContent['hero_bg'] ?? null;
+            if ($request->hasFile('hero_bg')) {
+                $heroBg = $request->file('hero_bg')->store('media/' . date('Y/m'), 'public');
+            } elseif ($request->has('hero_bg_media_path')) {
+                $heroBg = $request->input('hero_bg_media_path');
+            }
+            $hp['hero_bg'] = $heroBg;
+
+            $data['content'] = json_encode($hp);
             $data['template'] = 'homepage';
             $data['status'] = 'published';
             $data['slug'] = '__homepage__';

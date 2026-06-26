@@ -64,7 +64,11 @@
     <section class="relative pb-32 lg:pb-40 overflow-hidden flex items-center min-h-[80vh]">
         <div class="absolute inset-0">
             <!-- Background Image -->
-            <img src="{{ asset('storage/slider_bg.jpg') }}" alt="Batik Background" class="w-full h-full object-cover" />
+            @if(!empty($hc('hero_bg')))
+                <img src="{{ asset('storage/' . $hc('hero_bg')) }}" alt="Batik Background" class="w-full h-full object-cover" />
+            @else
+                <img src="{{ asset('storage/slider_bg.jpg') }}" alt="Batik Background" class="w-full h-full object-cover" />
+            @endif
             <!-- Overlay -->
             <div class="absolute inset-0 bg-gray-900/40 mix-blend-multiply"></div>
             <div class="absolute inset-0 bg-gradient-to-t from-gray-900/80 via-gray-900/20 to-transparent"></div>

@@ -18,7 +18,7 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('superuser.pages.update', $page) }}" class="flex flex-col lg:flex-row gap-8">
+    <form method="POST" action="{{ route('superuser.pages.update', $page) }}" enctype="multipart/form-data" class="flex flex-col lg:flex-row gap-8">
         @csrf
         @method('PUT')
 
@@ -57,6 +57,9 @@
                     <div>
                         <label class="block text-sm font-semibold text-gray-700 mb-1">Subjudul / Deskripsi Hero</label>
                         <textarea name="hp[hero_subtitle]" rows="2" class="w-full border-gray-200 rounded-xl px-4 py-2.5 text-sm focus:border-brand-500 focus:ring-brand-500/20 focus:ring">{{ $hpContent['hero_subtitle'] ?? 'Temukan koleksi batik terbaik yang dirancang khusus untuk menyempurnakan gaya Anda di setiap momen.' }}</textarea>
+                    </div>
+                    <div>
+                        <x-media-picker name="hero_bg" label="Gambar Background Hero (Slider)" :current="$hpContent['hero_bg'] ?? ''" preview-size="lg" />
                     </div>
                     <div class="grid grid-cols-2 gap-4">
                         <div>
