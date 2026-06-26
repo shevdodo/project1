@@ -7,6 +7,15 @@
     </div>
 
     @if(count($cart) > 0)
+        @php
+            $totalWeight = 0;
+            foreach($cart as $details) {
+                $totalWeight += ($details['weight'] ?? 0) * $details['quantity'];
+            }
+            if ($totalWeight <= 0) {
+                $totalWeight = 1000; // Fallback default
+            }
+        @endphp
         <div class="bg-white rounded-2xl shadow-sm border border-gray-100 overflow-hidden">
             <!-- Mobile View: Cards -->
             <div class="block md:hidden divide-y divide-gray-100">
@@ -141,7 +150,7 @@
                         <div class="grid grid-cols-2 gap-4">
                             <div>
                                 <label class="block text-sm text-gray-700 mb-1">Weight (grams)</label>
-                                <input type="number" id="weight" value="1000" min="100" class="w-full border-gray-300 rounded-lg shadow-sm focus:border-brand-500 focus:ring-brand-500/20 px-3 py-2 text-sm">
+                                <input type="number" id="weight" value="{{ $totalWeight }}" readonly class="w-full border-gray-300 rounded-lg shadow-sm bg-gray-50 text-gray-500 cursor-not-allowed px-3 py-2 text-sm">
                             </div>
                             <div>
                                 <label class="block text-sm text-gray-700 mb-1">Courier</label>

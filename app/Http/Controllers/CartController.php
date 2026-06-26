@@ -72,7 +72,8 @@ class CartController extends Controller
                 'price' => $product->price,
                 'quantity' => 1,
                 'image' => $product->image,
-                'size' => $size
+                'size' => $size,
+                'weight' => $product->weight
             ];
         }
 
