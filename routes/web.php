@@ -50,11 +50,17 @@ Route::prefix('pranotoweb')
         Route::delete('/users/{user}', [SuperuserDashboardController::class, 'usersDestroy'])->name('users.destroy');
 
         Route::resource('pages', PageController::class);
-        Route::resource('posts', PostController::class);
+
+        // Bulk delete HARUS sebelum resource route agar tidak ditangkap sebagai {post} ID
         Route::delete('/posts/bulk-delete', [PostController::class, 'bulkDestroy'])->name('posts.bulk-destroy');
+        Route::resource('posts', PostController::class);
+
         Route::resource('categories', CategoryController::class);
-        Route::resource('products', ProductController::class);
+
+        // Bulk delete HARUS sebelum resource route agar tidak ditangkap sebagai {product} ID
         Route::delete('/products/bulk-delete', [ProductController::class, 'bulkDestroy'])->name('products.bulk-destroy');
+        Route::resource('products', ProductController::class);
+
         
         Route::resource('menus', MenuController::class)->except(['create', 'edit', 'update', 'show']);
         Route::post('menus/{menu}/items', [MenuController::class, 'addItem'])->name('menus.items.add');
