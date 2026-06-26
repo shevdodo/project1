@@ -117,4 +117,15 @@ class ProductController extends Controller
         $product->delete();
         return redirect()->route('superuser.products.index')->with('status', 'Product deleted successfully.');
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        if (empty($ids)) {
+            return redirect()->route('superuser.products.index')->with('status', 'No products selected.');
+        }
+        $count = Product::whereIn('id', $ids)->count();
+        Product::whereIn('id', $ids)->delete();
+        return redirect()->route('superuser.products.index')->with('status', "{$count} product(s) deleted successfully.");
+    }
 }

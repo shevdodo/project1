@@ -51,8 +51,10 @@ Route::prefix('pranotoweb')
 
         Route::resource('pages', PageController::class);
         Route::resource('posts', PostController::class);
+        Route::delete('/posts/bulk-delete', [PostController::class, 'bulkDestroy'])->name('posts.bulk-destroy');
         Route::resource('categories', CategoryController::class);
         Route::resource('products', ProductController::class);
+        Route::delete('/products/bulk-delete', [ProductController::class, 'bulkDestroy'])->name('products.bulk-destroy');
         
         Route::resource('menus', MenuController::class)->except(['create', 'edit', 'update', 'show']);
         Route::post('menus/{menu}/items', [MenuController::class, 'addItem'])->name('menus.items.add');

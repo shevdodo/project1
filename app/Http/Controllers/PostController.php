@@ -107,4 +107,15 @@ class PostController extends Controller
         $post->delete();
         return redirect()->route('superuser.posts.index')->with('status', 'Post deleted successfully.');
     }
+
+    public function bulkDestroy(Request $request)
+    {
+        $ids = $request->input('ids', []);
+        if (empty($ids)) {
+            return redirect()->route('superuser.posts.index')->with('status', 'No posts selected.');
+        }
+        $count = Post::whereIn('id', $ids)->count();
+        Post::whereIn('id', $ids)->delete();
+        return redirect()->route('superuser.posts.index')->with('status', "{$count} post(s) deleted successfully.");
+    }
 }
