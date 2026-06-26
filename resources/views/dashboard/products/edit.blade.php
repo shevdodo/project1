@@ -41,7 +41,7 @@
             <div class="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 sm:p-8">
                 <h3 class="font-bold text-gray-900 mb-4 pb-3 border-b border-gray-100">Pricing & Inventory</h3>
                 <!-- Price -->
-                <div>
+                <div class="mb-5">
                     <label for="price" class="block text-sm font-semibold text-gray-800 mb-1">Price</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
@@ -49,6 +49,20 @@
                         </div>
                         <input type="number" name="price" id="price" value="{{ old('price', (int)$product->price) }}" min="0" step="1" class="w-full pl-12 border-gray-300 rounded-xl shadow-sm focus:border-brand-500 focus:ring focus:ring-brand-500/20 py-2.5 transition">
                     </div>
+                </div>
+
+                <!-- Weight -->
+                <div>
+                    <label for="weight" class="block text-sm font-semibold text-gray-800 mb-1">Berat Produk</label>
+                    <div class="relative">
+                        <input type="number" name="weight" id="weight" value="{{ old('weight', $product->weight) }}" min="0" step="1"
+                            class="w-full border-gray-300 rounded-xl shadow-sm focus:border-brand-500 focus:ring focus:ring-brand-500/20 px-4 py-2.5 pr-14 transition"
+                            placeholder="0">
+                        <div class="absolute inset-y-0 right-0 pr-4 flex items-center pointer-events-none">
+                            <span class="text-gray-500 text-sm">gram</span>
+                        </div>
+                    </div>
+                    <p class="text-xs text-gray-400 mt-1">Digunakan untuk kalkulasi ongkir. Kosongkan jika tidak ada.</p>
                 </div>
             </div>
         </div>

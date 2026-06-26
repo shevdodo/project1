@@ -37,13 +37,14 @@ class ProductController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:products,slug',
+            'name'        => 'required|string|max:255',
+            'slug'        => 'nullable|string|max:255|unique:products,slug',
             'description' => 'nullable|string',
-            'price' => 'nullable|numeric|min:0',
-            'status' => 'required|in:available,unavailable',
+            'price'       => 'nullable|numeric|min:0',
+            'weight'      => 'nullable|integer|min:0',
+            'status'      => 'required|in:available,unavailable',
             'category_id' => 'nullable|exists:categories,id',
-            'image' => 'nullable|image|max:2048',
+            'image'       => 'nullable|image|max:2048',
         ]);
 
         $data = $request->except(['image']);
@@ -78,13 +79,14 @@ class ProductController extends Controller
     public function update(Request $request, Product $product)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:products,slug,' . $product->id,
+            'name'        => 'required|string|max:255',
+            'slug'        => 'nullable|string|max:255|unique:products,slug,' . $product->id,
             'description' => 'nullable|string',
-            'price' => 'nullable|numeric|min:0',
-            'status' => 'required|in:available,unavailable',
+            'price'       => 'nullable|numeric|min:0',
+            'weight'      => 'nullable|integer|min:0',
+            'status'      => 'required|in:available,unavailable',
             'category_id' => 'nullable|exists:categories,id',
-            'image' => 'nullable|image|max:2048',
+            'image'       => 'nullable|image|max:2048',
         ]);
 
         $data = $request->except(['image']);
