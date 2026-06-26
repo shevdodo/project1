@@ -111,15 +111,23 @@ class SuperuserDashboardController extends Controller
         }
 
         if ($request->hasFile('fav_icon')) {
-            $path = $request->file('fav_icon')->store('settings', 'public');
-            $data['fav_icon'] = $path;
+            $folder = 'media/' . date('Y/m');
+            $file = $request->file('fav_icon');
+            $safeName = 'favicon-' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $data['fav_icon'] = $file->storeAs($folder, $safeName, 'public');
+        } elseif ($request->filled('fav_icon_media_path')) {
+            $data['fav_icon'] = $request->input('fav_icon_media_path');
         } else {
             unset($data['fav_icon']);
         }
 
         if ($request->hasFile('site_icon')) {
-            $path = $request->file('site_icon')->store('settings', 'public');
-            $data['site_icon'] = $path;
+            $folder = 'media/' . date('Y/m');
+            $file = $request->file('site_icon');
+            $safeName = 'site-icon-' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $data['site_icon'] = $file->storeAs($folder, $safeName, 'public');
+        } elseif ($request->filled('site_icon_media_path')) {
+            $data['site_icon'] = $request->input('site_icon_media_path');
         } else {
             unset($data['site_icon']);
         }

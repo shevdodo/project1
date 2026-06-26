@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class PostController extends Controller
@@ -51,7 +52,12 @@ class PostController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('posts', 'public');
+            $folder = 'media/' . date('Y/m');
+            $file = $request->file('image');
+            $safeName = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs($folder, $safeName, 'public');
+        } elseif ($request->filled('image_media_path')) {
+            $data['image'] = $request->input('image_media_path');
         }
 
         Post::create($data);
@@ -83,7 +89,12 @@ class PostController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('posts', 'public');
+            $folder = 'media/' . date('Y/m');
+            $file = $request->file('image');
+            $safeName = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs($folder, $safeName, 'public');
+        } elseif ($request->filled('image_media_path')) {
+            $data['image'] = $request->input('image_media_path');
         }
 
         $post->update($data);

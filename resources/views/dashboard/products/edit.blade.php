@@ -86,13 +86,7 @@
 
                 <!-- Product Image -->
                 <div class="mb-5">
-                    <label for="image" class="block text-sm font-semibold text-gray-800 mb-1">Product Image</label>
-                    @if($product->image)
-                        <div class="mb-3">
-                            <img src="{{ asset('storage/' . $product->image) }}" alt="Product Image" class="w-full h-32 object-cover rounded-xl border border-gray-200">
-                        </div>
-                    @endif
-                    <input type="file" name="image" id="image" class="w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-brand-50 file:text-brand-700 hover:file:bg-brand-100 transition">
+                    <x-media-picker name="image" label="Product Image" :current="old('image', $product->image)" preview-size="lg" />
                 </div>
 
                 <div class="pt-4 mt-2 border-t border-gray-100 flex flex-col space-y-3">

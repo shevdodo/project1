@@ -77,8 +77,10 @@ Route::prefix('pranotoweb')
 
         // Media Library Routes
         Route::get('/media', [MediaController::class, 'index'])->name('media.index');
+        Route::get('/media/api', [MediaController::class, 'api'])->name('media.api');
         Route::post('/media/upload', [MediaController::class, 'upload'])->name('media.upload');
         Route::delete('/media/delete', [MediaController::class, 'destroy'])->name('media.destroy');
+
     });
 
 /*

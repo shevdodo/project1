@@ -36,6 +36,19 @@ class MediaController extends Controller
     }
 
     /**
+     * JSON API for media picker component.
+     */
+    public function api(Request $request)
+    {
+        $type   = $request->input('type', 'image');
+        $search = $request->input('search', '');
+        $files  = $this->getMediaFiles($type, $search);
+
+        return response()->json(['files' => $files]);
+    }
+
+
+    /**
      * Upload one or multiple files.
      */
     public function upload(Request $request)

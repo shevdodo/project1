@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Product;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
 class ProductController extends Controller
@@ -55,7 +56,12 @@ class ProductController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products', 'public');
+            $folder = 'media/' . date('Y/m');
+            $file = $request->file('image');
+            $safeName = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs($folder, $safeName, 'public');
+        } elseif ($request->filled('image_media_path')) {
+            $data['image'] = $request->input('image_media_path');
         }
 
         Product::create($data);
@@ -91,7 +97,12 @@ class ProductController extends Controller
         }
 
         if ($request->hasFile('image')) {
-            $data['image'] = $request->file('image')->store('products', 'public');
+            $folder = 'media/' . date('Y/m');
+            $file = $request->file('image');
+            $safeName = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
+            $data['image'] = $file->storeAs($folder, $safeName, 'public');
+        } elseif ($request->filled('image_media_path')) {
+            $data['image'] = $request->input('image_media_path');
         }
 
         $product->update($data);
