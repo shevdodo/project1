@@ -27,11 +27,12 @@
     }
 @endphp
 
-<div x-data="{
+<div data-media-picker
+    x-data="{
     hasImage: {{ $currentUrl ? 'true' : 'false' }},
     previewUrl: '{{ $currentUrl ?? '' }}',
     hiddenValue: '{{ $current ?? '' }}',
-    inputMode: 'upload',
+    inputMode: '{{ $current ? 'library' : 'upload' }}',
     setMedia(url, path) {
         this.previewUrl = url;
         this.hiddenValue = path;
@@ -58,7 +59,7 @@
             document.getElementById('{{ $hiddenId }}').value = '';
         }
     }
-}">
+}" @media-selected="setMedia($event.detail.url, $event.detail.path)">
     <label class="block text-sm font-semibold text-gray-800 mb-2">{{ $label }}</label>
 
     {{-- Preview --}}
@@ -197,46 +198,48 @@
 </div>
 
 <script>
-    function mediaPickerModal(modalId) {
-        return {
-            open: false,
-            loading: false,
-            files: [],
-            selected: null,
-            search: '',
-            _pickerEl: null,
+    if (typeof window.mediaPickerModal === 'undefined') {
+        window.mediaPickerModal = function(modalId) {
+            return {
+                open: false,
+                loading: false,
+                files: [],
+                selected: null,
+                search: '',
 
-            loadMedia() {
-                this.loading = true;
-                this.selected = null;
-                fetch(`{{ route('superuser.media.api') }}?type=image&search=${encodeURIComponent(this.search)}`)
-                    .then(r => r.json())
-                    .then(data => {
-                        this.files = data.files || [];
-                        this.loading = false;
-                    })
-                    .catch(() => { this.loading = false; });
-            },
+                loadMedia() {
+                    this.loading = true;
+                    this.selected = null;
+                    const querySearch = this.search || '';
+                    fetch(`{{ route('superuser.media.api') }}?type=image&search=${encodeURIComponent(querySearch)}`)
+                        .then(r => r.json())
+                        .then(data => {
+                            this.files = data.files || [];
+                            this.loading = false;
+                        })
+                        .catch(() => { this.loading = false; });
+                },
 
-            selectFile(file) {
-                this.selected = file;
-            },
+                selectFile(file) {
+                    this.selected = file;
+                },
 
-            confirmSelect() {
-                if (!this.selected) return;
-                // Dispatch to the parent x-data
-                this.$el.closest('[x-data]').dispatchEvent(
-                    new CustomEvent('media-selected', {
-                        detail: { url: this.selected.url, path: this.selected.path },
-                        bubbles: true
-                    })
-                );
-                // Find parent picker and call setMedia
-                const picker = this.$el.closest('[x-data^="{ hasImage"]') || this.$el.closest('[x-data]');
-                if (picker && picker.__x) {
-                    picker.__x.$data.setMedia(this.selected.url, this.selected.path);
+                confirmSelect() {
+                    if (!this.selected) return;
+                    
+                    // Dispatch CustomEvent to root picker
+                    const modalEl = document.getElementById(modalId);
+                    if (modalEl) {
+                        modalEl.dispatchEvent(
+                            new CustomEvent('media-selected', {
+                                detail: { url: this.selected.url, path: this.selected.path },
+                                bubbles: true,
+                                composed: true
+                            })
+                        );
+                    }
+                    this.open = false;
                 }
-                this.open = false;
             }
         }
     }

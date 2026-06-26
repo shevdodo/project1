@@ -61,7 +61,7 @@ class ProductController extends Controller
             $file = $request->file('image');
             $safeName = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
             $data['image'] = $file->storeAs($folder, $safeName, 'public');
-        } elseif ($request->filled('image_media_path')) {
+        } elseif ($request->has('image_media_path')) {
             $data['image'] = $request->input('image_media_path');
         }
 
@@ -103,7 +103,7 @@ class ProductController extends Controller
             $file = $request->file('image');
             $safeName = Str::slug(pathinfo($file->getClientOriginalName(), PATHINFO_FILENAME)) . '-' . uniqid() . '.' . $file->getClientOriginalExtension();
             $data['image'] = $file->storeAs($folder, $safeName, 'public');
-        } elseif ($request->filled('image_media_path')) {
+        } elseif ($request->has('image_media_path')) {
             $data['image'] = $request->input('image_media_path');
         }
 
